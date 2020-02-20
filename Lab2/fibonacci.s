@@ -1,31 +1,22 @@
 				.text
 				.global _start
 
-_start:			
-				LDR R0, N
+_start:			MOV R0,#10			// number n to be computed (n=6)
 				BL FIBONACCI
-				POP {R4}
-				
-stop:			B stop
+				B END
 
-FIBONACCI:		PUSH {LR}
-				CMP R0, #2
-				BLE LESSTHAN2
-				SUB R0, R0, #1		//n-1
-
-				BL FIBONACCI			//push R0
-
-				SUB R0, R1, #1		//n-2
+FIBONACCI:		PUSH {R1,R2,LR}
+				MOV R1, R0
+				CMP R0, #1			//If condition (n<=1)
+				MOVLE R0,#1			//If N<2, return 1
+				BLE DONE
+				SUB R0,R1,#1		//Fib(n-1)
 				BL FIBONACCI
-				//POP {LR}
-				POP {R4-R5}
-				ADD R4, R4, R5
-				POP {LR}	//R0 contains result of fib(n-2) + R2
-				PUSH {R4}
-				BX LR
-				
-LESSTHAN2:		MOV R3, #1
-				PUSH {R3}
-				BX LR
+				MOV R2, R0			//R2 Holds result of fib(n-2)
+				SUBS R0,R1,#2		//Fib (n-2)
+				BL FIBONACCI
+				ADD R0,R0,R2		//fib (n-2) + fib (n-1)
 
-N:				.word 5
+DONE:			POP {R1,R2,PC}	
+
+END: B END

@@ -2,7 +2,7 @@
 				.global _start
 
 _start:		LDR R4, =NUMBER		//address of array
-				SUB R4, R4, #4		//fun stuff
+				SUB R4, R4, #4		//go back by 4 for the loop
 				LDR R5, N			//R5 for length of array
 
 LOOP:			SUBS R5, R5, #1		//loop through array
